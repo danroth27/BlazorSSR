@@ -1,10 +1,13 @@
 using BlazorSSR.Data;
 using BlazorSSR.Shared;
+using Microsoft.AspNetCore.Components.Endpoints;
+using Index = BlazorSSR.Pages.Index;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents();
+builder.Services.AddControllers();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
@@ -24,5 +27,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapRazorComponents<MainLayout>();
+
+app.MapDefaultControllerRoute();
+
+app.Map("/route", () => new RazorComponentResult<Index>(new { Message = "Hello from route!"}));
 
 app.Run();
