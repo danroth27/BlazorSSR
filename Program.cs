@@ -28,8 +28,8 @@ app.UseRouting();
 
 app.MapRazorComponents<MainLayout>();
 
-app.MapDefaultControllerRoute();
+app.Map("/route", () => new RazorComponentResult<Index>(new { Message = "Hello from route!" }));
 
-app.Map("/route", () => new RazorComponentResult<Index>(new { Message = "Hello from route!"}));
+app.MapDefaultControllerRoute();
 
 app.Run();
