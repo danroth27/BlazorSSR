@@ -12,6 +12,9 @@ public class WeatherForecastService
 
     public async Task<WeatherForecast[]> GetForecastAsync(DateOnly startDate)
     {
+        // Simulate lengthy API call
+        await Task.Delay(1000);
+
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = startDate.AddDays(index),

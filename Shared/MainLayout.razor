@@ -26,7 +26,9 @@
             </div>
 
             <article class="content px-4">
-                @Body
+                <CascadingModelBinder>
+                    @Body
+                </CascadingModelBinder>
             </article>
         </main>
     </div>
@@ -41,7 +43,6 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-
     <script src="_framework/blazor.web.js" suppress-error="BL9992"></script>
 </body>
 </html>

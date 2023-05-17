@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using System.ComponentModel.DataAnnotations;
+@inject FormDataProvider FormData
 
 <PageTitle>Index</PageTitle>
 
@@ -6,7 +8,39 @@
 
 Welcome to your new app.
 
+<EditForm FormHandlerName="ExampleForm" method="POST" Model="exampleModel" OnValidSubmit="HandleSubmit">
+    <InputText @bind-Value="exampleModel.Name" />
+    <button type="submit">Submit</button>
+</EditForm>
+
+@if (exampleModel.Name is not null)
+{
+    <p>Hello @exampleModel.Name</p>
+}
+
 @code {
     [Parameter]
     public string Message { get; set; } = "Hello, world!";
+
+    ExampleModel exampleModel = new();
+    EditContext editContext = new(new ExampleModel());
+
+    protected override void OnInitialized()
+    {
+        if (FormData.Entries.TryGetValue("Name", out var nameValues))
+        {
+            exampleModel.Name = nameValues.First();
+        }
+    }
+
+    void HandleSubmit()
+    {
+        Console.WriteLine(nameof(HandleSubmit));
+    }
+
+    public class ExampleModel
+    {
+        [Required]
+        public string? Name { get; set; }
+    }
 }

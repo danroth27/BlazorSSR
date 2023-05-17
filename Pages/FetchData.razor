@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 @using BlazorSSR.Data
 @inject WeatherForecastService ForecastService
+@attribute [StreamRendering(true)]
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -8,7 +9,7 @@
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
+@if (forecasts is null)
 {
     <p><em>Loading...</em></p>
 }
