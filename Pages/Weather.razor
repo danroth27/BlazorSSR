@@ -1,15 +1,13 @@
-﻿@page "/fetchdata"
-@using BlazorSSR.Data
-@inject WeatherForecastService ForecastService
+﻿@page "/showdata"
 @attribute [StreamRendering(true)]
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Weather</PageTitle>
 
-<h1>Weather forecast</h1>
+<h1>Weather</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates showing data from the server.</p>
 
-@if (forecasts is null)
+@if (forecasts == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -39,10 +37,24 @@ else
 }
 
 @code {
+    private static readonly string[] Summaries = new[]
+    {
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
+
     private WeatherForecast[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+        // Simulate retrieving the data asynchronously.
+        await Task.Delay(1000);
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        }).ToArray();
     }
 }
