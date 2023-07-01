@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using System.ComponentModel.DataAnnotations;
-@inject FormDataProvider FormData
 
 <PageTitle>Home</PageTitle>
 
@@ -10,38 +9,64 @@
 
 Welcome to your new app.
 
-<EditForm FormHandlerName="ExampleForm" method="POST" Model="exampleModel" OnValidSubmit="HandleSubmit">
-    <InputText @bind-Value="exampleModel.Name" />
-    <button type="submit">Submit</button>
+<EditForm Model="Model" method="POST" OnValidSubmit="DisplayCustomer">
+    <ValidationSummary />
+    <div>
+        <label for="Model.Name">
+            Name:
+            <InputText @bind-Value="Model.Name" />
+        </label>
+        <ValidationMessage For="() => Model.Name" />
+    </div>
+    <div>
+        <label for="Model.Email">
+            Email:
+            <InputText @bind-Value="Model.Email" />
+        </label>
+        <ValidationMessage For="() => Model.Email" />
+    </div>
+    <div>
+        <label for="Model.IsPreferred">
+            Preferred:
+            <InputCheckbox @bind-Value="Model.IsPreferred" />
+        </label>
+        <ValidationMessage For="() => Model.IsPreferred" />
+    </div>
+    <input id="send" type="submit" value="Send" />
 </EditForm>
 
-@if (exampleModel.Name is not null)
+@if (displayCustomer)
 {
-    <p>Hello @exampleModel.Name</p>
+    <p id="name">Customer: @Model.Name</p>
+    <p id="email">Email: @Model.Email</p>
+    <p id="preferred">Preferred: @Model.IsPreferred</p>
 }
 
 @code {
     [Parameter]
     public string Message { get; set; } = "Hello, world!";
 
-    ExampleModel exampleModel = new();
+    [SupplyParameterFromForm]
+    public Customer? Model { get; set; } = new();
 
-    protected override void OnInitialized()
+    [CascadingParameter]
+    public ModelBindingContext Context { get; set; }
+
+    public void DisplayCustomer()
     {
-        if (FormData.Entries.TryGetValue("Name", out var nameValues))
-        {
-            exampleModel.Name = nameValues.First();
-        }
+        
     }
 
-    void HandleSubmit()
-    {
-        Console.WriteLine(nameof(HandleSubmit));
-    }
 
-    public class ExampleModel
+    public class Customer
     {
+        public int Id { get; set; }
+
         [Required]
         public string? Name { get; set; }
+        
+        public string? Email { get; set; }
+        
+        public bool IsPreferred { get; set; }
     }
 }
