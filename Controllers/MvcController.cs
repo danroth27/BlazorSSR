@@ -1,9 +1,6 @@
-﻿using BlazorSSR.Pages;
-using BlazorSSR.Shared;
-using Microsoft.AspNetCore.Components;
+﻿using BlazorSSR.Components.Pages;
 using Microsoft.AspNetCore.Components.Endpoints;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace BlazorSSR.Controllers;
 public class MvcController : Controller

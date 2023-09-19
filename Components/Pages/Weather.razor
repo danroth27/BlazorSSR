@@ -1,4 +1,4 @@
-﻿@page "/showdata"
+﻿@page "/weather"
 @attribute [StreamRendering(true)]
 
 <PageTitle>Weather</PageTitle>
@@ -56,5 +56,13 @@ else
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         }).ToArray();
+    }
+
+    private class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 }

@@ -1,0 +1,70 @@
+﻿@page "/"
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<PageTitle>Home</PageTitle>
+
+<h1>Home</h1>
+
+<h2>@Message</h2>
+
+Welcome to your new app.
+
+<h3>Add customer</h3>
+
+<EditForm FormName="submit-customer" method="post" Model="NewCustomer" OnValidSubmit="AddCustomer" class="col-lg-6">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="NewCustomer.Name" />
+        <ValidationMessage For="() => NewCustomer.Name" />
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="NewCustomer.Email" />
+    </div>
+    <div class="mb-3 form-check">
+        <InputCheckbox id="preferred" class="form-check-input" @bind-Value="NewCustomer.IsPreferred" />
+        <label for="preferred" class="form-check-label">Preferred</label>
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@if (customers.Count > 0)
+{
+    <QuickGrid Items="customers.AsQueryable()" >
+        <PropertyColumn Property="c => c.Name" />
+        <PropertyColumn Property="c => c.Email" />
+        <PropertyColumn Property="c => c.IsPreferred" Title="Preferred" />
+    </QuickGrid>
+}
+
+@code {
+    static List<Customer> customers = new();
+
+    [Parameter]
+    public string Message { get; set; } = "Hello, world!";
+
+    [SupplyParameterFromForm]
+    public Customer NewCustomer { get; set; } = new();
+
+    public void AddCustomer()
+    {
+        customers.Add(NewCustomer);
+        NewCustomer = new();
+    }
+
+    public class Customer
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public string? Name { get; set; }
+        
+        [EmailAddress]
+        public string? Email { get; set; }
+        
+        public bool IsPreferred { get; set; }
+    }
+}

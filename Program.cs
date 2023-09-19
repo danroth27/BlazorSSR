@@ -1,5 +1,5 @@
 using BlazorSSR;
-using BlazorSSR.Pages;
+using BlazorSSR.Components.Pages;
 using Microsoft.AspNetCore.Components.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
